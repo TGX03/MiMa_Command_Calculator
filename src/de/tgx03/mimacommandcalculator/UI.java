@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A GUI which is able to calculate the internal commands of a MiMa
+ */
 public class UI {
 
     private static final short addressMinValue = 0;
@@ -22,6 +25,10 @@ public class UI {
     private static final JComboBox<String> ALU = new JComboBox<>(new String[]{"idle", "ADD", "rotate", "AND", "OR", "XOR", "NOT", "if x = y, -1 -> z, else 0 -> z"});
     private static final Updater updater = new Updater();
 
+    /**
+     * Launches the main windows
+     * @param args ignored
+     */
     public static void main(String[] args) {
         window.setTitle("MiMa Bit Calculator");
         window.setSize(1200, 110);
@@ -46,6 +53,9 @@ public class UI {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Initializes all the checkboxes with their corresponding bit and the text show next to it
+     */
     private static void createCheckboxes() {
         for (byte i = 0; i < bits.length; i++) {
             if (i < 4) {
@@ -74,7 +84,12 @@ public class UI {
         bits[0].setText("Proprietary 0");
     }
 
+    /**
+     * Update the shown result
+     */
     private static void update() {
+
+        // Try to parse the set address
         int result;
         try {
             result = Integer.decode(nextAddress.getText());
@@ -82,18 +97,25 @@ public class UI {
             nextAddress.setForeground(Color.RED);
             return;
         }
+        // Verify the address is valid
         if (result < addressMinValue || result > addressMaxValue) {
             nextAddress.setForeground(Color.RED);
             return;
         }
         nextAddress.setForeground(Color.BLACK);
+
+        // Calculate the value of all the set flags
         for (CheckBox checkBox : bits) {
             if (checkBox.isSelected()) {
                 result = result + pow(2, checkBox.exponent);
             }
         }
+
+        // Which operation the ALU should perform
         int aluCode = ALU.getSelectedIndex() << 12;
         result = result + aluCode;
+
+        // Print the result in the selected representation
         switch (representations.getSelectedIndex()) {
             case 0 -> UI.result.setText(Integer.toString(result));
             case 1 -> UI.result.setText(Integer.toBinaryString(result));
@@ -103,6 +125,12 @@ public class UI {
         }
     }
 
+    /**
+     * Raises an int to a power and returns an int
+     * @param base The base of the power to calculate
+     * @param exponent The exponent of the power to calculate
+     * @return The base risen to the exponent
+     */
     private static int pow(int base, int exponent) {
         if (exponent == 0) {
             return 1;
@@ -117,6 +145,9 @@ public class UI {
         }
     }
 
+    /**
+     * A class responsible for creating an object which triggers the update method of the UI when one of the element gets updated
+     */
     private static class Updater implements ActionListener, ChangeListener, DocumentListener {
 
         @Override

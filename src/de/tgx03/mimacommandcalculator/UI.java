@@ -16,6 +16,7 @@ public class UI {
 
     private static final short addressMinValue = 0;
     private static final short addressMaxValue = 255;
+    private static final Dimension initialSize = new Dimension(1140, 110);
 
     private static final CheckBox[] bits = new CheckBox[17];
     private static final JTextField nextAddress = new JTextField("Next address", 10);
@@ -31,7 +32,7 @@ public class UI {
      */
     public static void main(String[] args) {
         window.setTitle("MiMa Bit Calculator");
-        window.setSize(1200, 110);
+        window.setSize(initialSize);
         window.setResizable(true);
         window.setLayout(new FlowLayout());
         createCheckboxes();

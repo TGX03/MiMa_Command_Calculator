@@ -20,7 +20,7 @@ public class UI {
     private static final CheckBox[] bits = new CheckBox[17];
     private static final JTextField nextAddress = new JTextField("Next address", 10);
     private static final JFrame window = new JFrame();
-    private static final JLabel result = new JLabel("Result: 0");
+    private static final JTextField result = new JTextField("Result: 0", 25);
     private static final JComboBox<String> representations = new JComboBox<>(new String[]{"Decimal", "Binary", "Hexadecimal", "Octal"});
     private static final JComboBox<String> ALU = new JComboBox<>(new String[]{"idle", "ADD", "rotate", "AND", "OR", "XOR", "NOT", "if x = y, -1 -> z, else 0 -> z"});
     private static final Updater updater = new Updater();
@@ -48,6 +48,8 @@ public class UI {
         representations.setSelectedIndex(2);
         representations.addActionListener(updater);
         window.add(representations);
+        result.setEditable(false);
+        result.setBorder(BorderFactory.createEmptyBorder());
         window.add(result);
         window.setVisible(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
